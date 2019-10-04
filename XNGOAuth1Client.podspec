@@ -1,5 +1,5 @@
 Pod::Spec.new do |s|
-  s.name = 'XNGOAuth1Client'
+  s.name = 'IYXNGOAuth1Client'
   s.version = '2.0.1'
   s.license = 'MIT'
   s.ios.deployment_target = '6.0'
@@ -9,7 +9,7 @@ Pod::Spec.new do |s|
     'XING iOS Team' => 'iphonedev@xing.com'
   }
   s.source = {
-    :git => 'https://github.com/xing/XNGOAuth1Client.git',
+    :git => 'https://github.com/xing/IYXNGOAuth1Client.git',
     :tag => s.version.to_s
   }
   s.source_files = 'XNGOAuth1Client/*.{h,m}'
