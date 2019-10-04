@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'IYXNGOAuth1Client'
-  s.version = '2.0.3'
+  s.version = '2.0.2'
   s.license = 'MIT'
   s.ios.deployment_target = '6.0'
   s.osx.deployment_target = '10.8'
