@@ -12,7 +12,7 @@ Pod::Spec.new do |s|
     :git => 'https://github.com/ivanyorgov/IYXNGOAuth1Client.git',
     :tag => s.version.to_s
   }
-  s.source_files = 'XNGOAuth1Client/*.{h,m}'
+  s.source_files = 'IYXNGOAuth1Client/*.{h,m}'
   s.requires_arc = true
   s.homepage = 'https://www.xing.com'
     s.dependency 'AFNetworking/Reachability', '2.5.4'	    
