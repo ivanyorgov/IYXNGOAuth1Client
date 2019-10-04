@@ -19,8 +19,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "XNGOAuth1Client.h"
-#import "XNGOAuthToken.h"
+#import "IYXNGOAuth1Client.h"
+#import "IYXNGOAuthToken.h"
 #import <CommonCrypto/CommonHMAC.h>
 
 static NSString *const kAFOAuth1Version = @"1.0";
@@ -109,7 +109,7 @@ static inline NSString *AFHMACSHA1Signature(NSURLRequest *request, NSString *con
     return AFEncodeBase64WithData([NSData dataWithBytes:digest length:CC_SHA1_DIGEST_LENGTH]);
 }
 
-@implementation XNGOAuth1Client
+@implementation IYXNGOAuth1Client
 
 - (instancetype)initWithBaseURL:(NSURL *)url {
     self = [super initWithBaseURL:url];
@@ -202,7 +202,7 @@ static inline NSString *AFHMACSHA1Signature(NSURLRequest *request, NSString *con
 - (NSString *)OAuthSignatureForMethod:(NSString *)method
                                  path:(NSString *)path
                            parameters:(NSDictionary *)parameters
-                                token:(XNGOAuthToken *)token {
+                                token:(IYXNGOAuthToken *)token {
     NSMutableURLRequest *request = [self encodedRequestWithMethod:@"GET" path:path parameters:parameters];
     [request setHTTPMethod:method];
 
@@ -260,17 +260,17 @@ static inline NSString *AFHMACSHA1Signature(NSURLRequest *request, NSString *con
                                 accessTokenPath:(NSString *)accessTokenPath
                                    accessMethod:(NSString *)accessMethod
                                           scope:(NSString *)scope
-                                        success:(void (^)(XNGOAuthToken *accessToken, id responseObject))success
+                                        success:(void (^)(IYXNGOAuthToken *accessToken, id responseObject))success
                                         failure:(void (^)(NSError *error))failure {
-    [self acquireOAuthRequestTokenWithPath:requestTokenPath callbackURL:callbackURL accessMethod:accessMethod scope:scope success:^(XNGOAuthToken *requestToken, id responseObject) {
-        __block XNGOAuthToken *currentRequestToken = requestToken;
+    [self acquireOAuthRequestTokenWithPath:requestTokenPath callbackURL:callbackURL accessMethod:accessMethod scope:scope success:^(IYXNGOAuthToken *requestToken, id responseObject) {
+        __block IYXNGOAuthToken *currentRequestToken = requestToken;
 
         self.applicationLaunchNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAFApplicationLaunchedWithURLNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
                 NSURL *url = [[notification userInfo] valueForKey:kAFApplicationLaunchOptionsURLKey];
 
-                currentRequestToken.verifier = [[XNGOAuthToken parametersFromQueryString:[url query]] valueForKey:@"oauth_verifier"];
+                currentRequestToken.verifier = [[IYXNGOAuthToken parametersFromQueryString:[url query]] valueForKey:@"oauth_verifier"];
 
-                [self acquireOAuthAccessTokenWithPath:accessTokenPath requestToken:currentRequestToken accessMethod:accessMethod success:^(XNGOAuthToken *accessToken, id secondResponseObject) {
+                [self acquireOAuthAccessTokenWithPath:accessTokenPath requestToken:currentRequestToken accessMethod:accessMethod success:^(IYXNGOAuthToken *accessToken, id secondResponseObject) {
                         if (self.serviceProviderRequestCompletion) {
                             self.serviceProviderRequestCompletion();
                         }
@@ -320,7 +320,7 @@ static inline NSString *AFHMACSHA1Signature(NSURLRequest *request, NSString *con
                              callbackURL:(NSURL *)callbackURL
                             accessMethod:(NSString *)accessMethod
                                    scope:(NSString *)scope
-                                 success:(void (^)(XNGOAuthToken *requestToken, id responseObject))success
+                                 success:(void (^)(IYXNGOAuthToken *requestToken, id responseObject))success
                                  failure:(void (^)(NSError *error))failure {
     NSMutableDictionary *parameters = [[self OAuthParameters] mutableCopy];
     parameters[@"oauth_callback"] = [callbackURL absoluteString];
@@ -331,7 +331,7 @@ static inline NSString *AFHMACSHA1Signature(NSURLRequest *request, NSString *con
     NSMutableURLRequest *request = [self requestWithMethod:accessMethod path:path parameters:parameters];
     AFHTTPRequestOperation *requestOperation = [self HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (success) {
-            XNGOAuthToken *accessToken = [[XNGOAuthToken alloc] initWithQueryString:operation.responseString];
+            IYXNGOAuthToken *accessToken = [[IYXNGOAuthToken alloc] initWithQueryString:operation.responseString];
             success(accessToken, responseObject);
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -344,9 +344,9 @@ static inline NSString *AFHMACSHA1Signature(NSURLRequest *request, NSString *con
 }
 
 - (void)acquireOAuthAccessTokenWithPath:(NSString *)path
-                           requestToken:(XNGOAuthToken *)requestToken
+                           requestToken:(IYXNGOAuthToken *)requestToken
                            accessMethod:(NSString *)accessMethod
-                                success:(void (^)(XNGOAuthToken *accessToken, id responseObject))success
+                                success:(void (^)(IYXNGOAuthToken *accessToken, id responseObject))success
                                 failure:(void (^)(NSError *error))failure {
     if (requestToken.key && requestToken.verifier) {
         self.accessToken = requestToken;
@@ -358,7 +358,7 @@ static inline NSString *AFHMACSHA1Signature(NSURLRequest *request, NSString *con
         NSMutableURLRequest *request = [self requestWithMethod:accessMethod path:path parameters:parameters];
         AFHTTPRequestOperation *requestOperation = [self HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
             if (success) {
-                XNGOAuthToken *accessToken = [[XNGOAuthToken alloc] initWithQueryString:operation.responseString];
+                IYXNGOAuthToken *accessToken = [[IYXNGOAuthToken alloc] initWithQueryString:operation.responseString];
                 success(accessToken, responseObject);
             }
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -478,7 +478,7 @@ static inline NSString *AFHMACSHA1Signature(NSURLRequest *request, NSString *con
 #pragma mark - NSCopying
 
 - (id)copyWithZone:(NSZone *)zone {
-    XNGOAuth1Client *copy = [(XNGOAuth1Client *)[[self class] allocWithZone:zone] initWithBaseURL : self.url
+    IYXNGOAuth1Client *copy = [(IYXNGOAuth1Client *)[[self class] allocWithZone:zone] initWithBaseURL : self.url
                              key : self.key
                              secret : self.secret];
     copy.signatureMethod = self.signatureMethod;

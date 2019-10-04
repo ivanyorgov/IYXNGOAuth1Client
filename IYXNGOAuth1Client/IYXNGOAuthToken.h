@@ -21,7 +21,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface XNGOAuthToken : NSObject
+@interface IYXNGOAuthToken : NSObject
 
 @property (readwrite, nonatomic, copy) NSString *key;
 @property (readwrite, nonatomic, copy) NSString *secret;
@@ -54,7 +54,7 @@
 
    @return Whether or not the credential was stored in the keychain.
  */
-+ (BOOL)storeCredential:(XNGOAuthToken *)credential
++ (BOOL)storeCredential:(IYXNGOAuthToken *)credential
          withIdentifier:(NSString *)identifier;
 
 /**
@@ -66,7 +66,7 @@
 
    @return Whether or not the credential was stored in the keychain.
  */
-+ (BOOL)storeCredential:(XNGOAuthToken *)credential
++ (BOOL)storeCredential:(IYXNGOAuthToken *)credential
          withIdentifier:(NSString *)identifier
       withAccessibility:(id)securityAccessibility;
 
@@ -77,7 +77,7 @@
 
    @return The retrieved OAuth token.
  */
-+ (XNGOAuthToken *)retrieveCredentialWithIdentifier:(NSString *)identifier;
++ (IYXNGOAuthToken *)retrieveCredentialWithIdentifier:(NSString *)identifier;
 
 /**
    Deletes the OAuth token stored with the specified service identifier from the Keychain.

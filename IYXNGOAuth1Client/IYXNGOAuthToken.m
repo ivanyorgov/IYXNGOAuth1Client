@@ -19,9 +19,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "XNGOAuthToken.h"
+#import "IYXNGOAuthToken.h"
 
-@implementation XNGOAuthToken
+@implementation IYXNGOAuthToken
 
 + (NSDictionary *)parametersFromQueryString:(NSString *)queryString {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
@@ -128,7 +128,7 @@ static NSDictionary *AFKeychainQueryDictionaryWithIdentifier(NSString *identifie
 
 #pragma mark -
 
-+ (XNGOAuthToken *)retrieveCredentialWithIdentifier:(NSString *)identifier {
++ (IYXNGOAuthToken *)retrieveCredentialWithIdentifier:(NSString *)identifier {
     NSMutableDictionary *mutableQueryDictionary = [AFKeychainQueryDictionaryWithIdentifier(identifier) mutableCopy];
     mutableQueryDictionary[(__bridge id)kSecReturnData] = (__bridge id)kCFBooleanTrue;
     mutableQueryDictionary[(__bridge id)kSecMatchLimit] = (__bridge id)kSecMatchLimitOne;
@@ -142,7 +142,7 @@ static NSDictionary *AFKeychainQueryDictionaryWithIdentifier(NSString *identifie
     }
 
     NSData *data = (__bridge_transfer NSData *)result;
-    XNGOAuthToken *credential = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    IYXNGOAuthToken *credential = [NSKeyedUnarchiver unarchiveObjectWithData:data];
 
     return credential;
 }
@@ -159,7 +159,7 @@ static NSDictionary *AFKeychainQueryDictionaryWithIdentifier(NSString *identifie
     return (status == errSecSuccess);
 }
 
-+ (BOOL)storeCredential:(XNGOAuthToken *)credential
++ (BOOL)storeCredential:(IYXNGOAuthToken *)credential
          withIdentifier:(NSString *)identifier {
     id securityAccessibility = nil;
 #if (defined(__IPHONE_OS_VERSION_MAX_ALLOWED) && __IPHONE_OS_VERSION_MAX_ALLOWED >= 43000) || (defined(__MAC_OS_X_VERSION_MAX_ALLOWED) && __MAC_OS_X_VERSION_MAX_ALLOWED >= 1090)
@@ -169,7 +169,7 @@ static NSDictionary *AFKeychainQueryDictionaryWithIdentifier(NSString *identifie
     return [[self class] storeCredential:credential withIdentifier:identifier withAccessibility:securityAccessibility];
 }
 
-+ (BOOL)storeCredential:(XNGOAuthToken *)credential
++ (BOOL)storeCredential:(IYXNGOAuthToken *)credential
          withIdentifier:(NSString *)identifier
       withAccessibility:(id)securityAccessibility {
     NSMutableDictionary *mutableQueryDictionary = [AFKeychainQueryDictionaryWithIdentifier(identifier) mutableCopy];
@@ -234,7 +234,7 @@ static NSDictionary *AFKeychainQueryDictionaryWithIdentifier(NSString *identifie
 #pragma mark - NSCopying
 
 - (id)copyWithZone:(NSZone *)zone {
-    XNGOAuthToken *copy = (XNGOAuthToken *)[[[self class] allocWithZone:zone] init];
+    IYXNGOAuthToken *copy = (IYXNGOAuthToken *)[[[self class] allocWithZone:zone] init];
     copy.key = self.key;
     copy.secret = self.secret;
     copy.session = self.session;

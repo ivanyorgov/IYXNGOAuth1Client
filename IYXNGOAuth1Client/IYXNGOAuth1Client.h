@@ -35,9 +35,9 @@ typedef NS_ENUM (NSUInteger, AFHTTPClientParameterEncoding) {
 typedef void (^AFServiceProviderRequestHandlerBlock)(NSURLRequest *request);
 typedef void (^AFServiceProviderRequestCompletionBlock)();
 
-@class XNGOAuthToken;
+@class IYXNGOAuthToken;
 
-@interface XNGOAuth1Client : AFHTTPRequestOperationManager
+@interface IYXNGOAuth1Client : AFHTTPRequestOperationManager
 
 @property (readwrite, nonatomic, copy) NSURL *url;
 @property (readwrite, nonatomic, copy) NSString *key;
@@ -51,7 +51,7 @@ typedef void (^AFServiceProviderRequestCompletionBlock)();
 @property (nonatomic, assign) AFOAuthSignatureMethod signatureMethod;
 @property (nonatomic, assign) AFHTTPClientParameterEncoding parameterEncoding;
 @property (nonatomic, copy) NSString *realm;
-@property (nonatomic) XNGOAuthToken *accessToken;
+@property (nonatomic) IYXNGOAuthToken *accessToken;
 @property (nonatomic) NSString *oauthAccessMethod;
 @property (nonatomic) NSMutableDictionary *defaultHeaders;
 @property (nonatomic) NSStringEncoding stringEncoding;
@@ -72,20 +72,20 @@ typedef void (^AFServiceProviderRequestCompletionBlock)();
                                 accessTokenPath:(NSString *)accessTokenPath
                                    accessMethod:(NSString *)accessMethod
                                           scope:(NSString *)scope
-                                        success:(void (^)(XNGOAuthToken *accessToken, id responseObject))success
+                                        success:(void (^)(IYXNGOAuthToken *accessToken, id responseObject))success
                                         failure:(void (^)(NSError *error))failure;
 
 - (void)acquireOAuthRequestTokenWithPath:(NSString *)path
                              callbackURL:(NSURL *)url
                             accessMethod:(NSString *)accessMethod
                                    scope:(NSString *)scope
-                                 success:(void (^)(XNGOAuthToken *requestToken, id responseObject))success
+                                 success:(void (^)(IYXNGOAuthToken *requestToken, id responseObject))success
                                  failure:(void (^)(NSError *error))failure;
 
 - (void)acquireOAuthAccessTokenWithPath:(NSString *)path
-                           requestToken:(XNGOAuthToken *)requestToken
+                           requestToken:(IYXNGOAuthToken *)requestToken
                            accessMethod:(NSString *)accessMethod
-                                success:(void (^)(XNGOAuthToken *accessToken, id responseObject))success
+                                success:(void (^)(IYXNGOAuthToken *accessToken, id responseObject))success
                                 failure:(void (^)(NSError *error))failure;
 
 /**
